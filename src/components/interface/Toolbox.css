@@ -1,0 +1,148 @@
+@import "../../css/mixins";
+
+.cms-output-bumper {
+  display: block;
+  margin-top: 30px;
+  font-style: italic;
+}
+
+.cms-toolbox {
+  /* sizing */
+  padding: var(--gutter-md);
+  /* theming */
+  background-color: var(--light-1);
+  box-shadow: -1px 0 0 var(--light-2); /* left "border" */
+  box-shadow: 0 -1px 0 var(--light-2); /* top "border" */
+
+  @mixin dark-mode {
+    background-color: var(--dark-2);
+    box-shadow: none !important;
+  }
+
+  & > .cms-filter-search {
+    margin-bottom: 0.625rem;
+  }
+  & > .cms-button-group {
+    margin-bottom: 1.25rem;
+  }
+
+  /* reset card widths */
+  & .cms-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* wrapper for all decks */
+.cms-toolbox-deck-wrapper.is-hidden {
+  /* in output view, hide everything except for edit dialogs */
+  & .cms-deck-heading,
+  & .cms-deck-description,
+  & .cms-card {
+    display: none;
+  }
+}
+
+/* output view */
+.cms-button-list {
+  @mixin list-reset;
+  animation: appearFromBelow 0.25s ease-out;
+}
+.cms-button-item {
+  &:not(:last-child) {
+    margin-bottom: 0.5em;
+  }
+
+  & .cms-button {
+    text-align: left;
+    /* handle large output */
+    border-radius: 0.5em;
+    overflow: auto;
+    max-height: 6em;
+  }
+
+  & .cms-variable {
+    display: inline-block;
+    margin-top: 0.5em;
+  }
+}
+
+/* toggle the toolbox */
+.cms-toolbox {
+  transition:
+    background-color 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    transform 0.2s ease-out;
+
+  /* toggle button */
+  & .cms-toolbox-collapse-wrapper {
+    @mixin absolute-vertical-center;
+    position: fixed;
+    left: auto;
+    right: calc(var(--toolbox-width) - 0.75rem);
+    z-index: 1;
+  }
+  & .cms-toolbox-collapse-button {
+    box-shadow: none;
+    transition-property: color, border, background-color, box-shadow, transform;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+  }
+
+  /* collapsible on big screens */
+  @mixin min-lg {
+    margin-left: auto;
+
+    /* collapsed state */
+    &.is-hidden {
+      max-height: 100vh;
+      position: fixed;
+      background: none;
+      box-shadow: none !important;
+      transform: translateX(calc(100% - 2rem));
+      right: 0;
+
+      /* hide toolbar children */
+      & > * ~ * {
+        display: none;
+      }
+
+      /* reposition the button */
+      & .cms-toolbox-collapse-wrapper {
+        left: 0.75rem;
+
+        & ~ * {
+          opacity: 0;
+          z-index: -1;
+          transform: translateX(25%);
+          transition:
+            opacity 0.2s ease-out,
+            transform 0.2s ease-out;
+        }
+      }
+      & .cms-toolbox-collapse-button:hover {
+        transform: translateX(-0.125rem);
+      }
+    }
+  }
+
+  /* open state */
+  &.is-visible .cms-toolbox-collapse-button {
+    background: var(--white);
+
+    @mixin dark-mode {
+      background: var(--black);
+    }
+    &:hover {
+      transform: translateX(0.125rem);
+    }
+  }
+
+  /* when a dialog is opened from inside the toolbox, the toolbox needs to be in front of the nav */
+  &.has-open-dialog {
+    z-index: 20;
+  }
+}

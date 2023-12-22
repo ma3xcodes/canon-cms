@@ -1,0 +1,45 @@
+@import "../../css/mixins.css";
+
+/* layout */
+.cp-text-button-group,
+.cms-text-button-group {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 1.75rem;
+  }
+
+  & > *:first-child {
+    flex: 1 1 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0;
+  }
+
+  & > *:last-child {
+    flex: 1 0 auto;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  & > [class*="-button"] {
+    height: auto; /* let flex handle it */
+    width: auto;
+    margin-left: calc(0px - var(--button-border-width));
+  }
+}
+
+
+/* admin panel context */
+.cms-text-button-group > .cms-button {
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 1px;
+  white-space: nowrap;
+}
+
+
+/* profile context */
+.cp-text-button-group > .cp-button {
+  border-top-right-radius: var(--field-border-radius);
+  border-bottom-right-radius: var(--field-border-radius);
+}

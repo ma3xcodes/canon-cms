@@ -1,0 +1,21 @@
+@import "../../css/mixins.css";
+
+.SourceGroup {
+  color: var(--dark-1);
+  & .bp3-popover-target {
+    display: inline;
+    & span {
+      text-decoration: underline;
+      &:hover {
+        cursor: help;
+      }
+    }
+    & a {
+      opacity: 0.75;
+      &:hover {
+        cursor: help;
+        opacity: 1;
+      }
+    }
+  }
+}

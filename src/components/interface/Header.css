@@ -1,0 +1,81 @@
+@import "../../css/mixins.css";
+
+.cms-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* link to profile */
+.cms-header-link-container {
+  /* sizing (limit max width & account for link icon) */
+  @mixin overflow-ellipsis;
+  max-width: calc(100% + 1.5rem);
+  height: 1.5em; /* needed for text-overflow: ellipsis */
+  margin-left: -1.25rem;
+  padding-left: 1.25rem;
+  /* space out from button(s) when wrapping */
+  margin-bottom: 1.25rem;
+  /* theming */
+  color: var(--dark-2);
+  transition: border 0.2s ease-out;
+
+  @mixin dark-mode {
+    color: var(--gray);
+  }
+
+  /* reset actual link */
+  & .cms-header-link {
+    text-decoration: none;
+    color: inherit;
+    /* "border" */
+    background-position: 0 calc(1em + 2px);
+    padding-bottom: 2px;
+    background-size: 1px;
+    background-image: linear-gradient(var(--light-3) 50%, var(--light-3) 50%);
+    background-repeat: repeat-x;
+
+    @mixin dark-mode {
+      background-image: linear-gradient(var(--dark-2) 50%, var(--dark-2) 50%);
+    }
+
+    & .cms-header-link-icon {
+      @mixin absolute-vertical-center;
+      width: 1.25em;
+      left: -1.25em;
+      padding-right: 0.25em;
+    }
+
+    /* interactions */
+    &:hover, &:focus {
+      background-image: linear-gradient(var(--accent-dark) 50%, var(--accent-dark) 50%);
+      & .cms-header-link-icon { color: var(--accent-dark) };
+
+      @mixin dark-mode {
+        background-image: linear-gradient(var(--accent) 50%, var(--accent) 50%);
+        & .cms-header-link-icon { color: var(--accent) };
+      }
+    }
+  }
+
+  /* highlight preview id */
+  & .cms-header-link-id,
+  & .cms-header-link-slug {
+    font-weight: 600;
+    color: var(--dark-3);
+
+    @mixin dark-mode {
+      color: var(--light-1);
+    }
+  }
+}
+
+.cms-header-actions-container {
+  margin-bottom: var(--gutter-md);
+
+  & .cms-header-delete-button:hover,
+  & .cms-header-delete-button:focus {
+    @mixin error-text;
+  }
+}

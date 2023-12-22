@@ -1,0 +1,91 @@
+@import "../../css/mixins.css";
+
+.cms-selector-editor-button-group {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* TABLE */
+.cms-selector-editor-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+}
+
+.cms-selector-status {
+  text-align: center;
+  color: var(--alert);
+}
+
+/* labels */
+.cms-selector-editor-thead {
+  @mixin label-color;
+  @mixin font-xxs;
+}
+
+/* space out cells */
+.cms-selector-editor-row:not(:last-child) > *:not(.cms-reorder) {
+  padding-bottom: .75rem;
+  & > * { z-index: 1; } /* in front of reorder buttons */
+}
+
+.cms-selector-editor-cell {
+  vertical-align: baseline;
+
+  &:first-child,
+  &:nth-child(4) {
+    width: 4em;
+  }
+  &:nth-child(2) {
+    padding-right: var(--gutter-sm);
+  }
+  &:nth-child(3) {
+    padding-left: var(--gutter-sm);
+  }
+  &:nth-child(4) {
+    text-align: right;
+  }
+
+  &.cms-delete-selector-editor-cell {
+    vertical-align: top;
+    top: 0.25rem;
+  }
+
+  /* display: table-row & position: relative don't play nicely together */
+  &.cms-reorder {
+    bottom: auto;
+    transform: translateY(.75rem);
+    border-bottom: 1px solid var(--light-2);
+
+    @mixin dark-mode {
+      border-color: var(--dark-2);
+    }
+
+    & .cms-reorder-button {
+      transform: translateY(calc(50% + 1px));
+    }
+  }
+}
+
+/* custom default */
+.cms-selector-editor-custom {
+  display: flex;
+  align-items: baseline;
+  margin-top: var(--gutter-lg);
+
+  /* fudge hidden/visible controls into the same place */
+  &.is-visible { margin-bottom: 0; }
+  &.is-hidden  { margin-bottom: 0.475em; top: 0.2em; }
+
+  & .cms-selector-editor-custom-checkbox {
+    margin-right: 0.5rem;
+  }
+
+  /* nested label */
+  & > .cms-select-label {
+    flex: 1 0 auto; /* fill up all the space */
+    /* offset select padding */
+    margin-top: -0.3em;
+    margin-bottom: -0.3em;
+  }
+}

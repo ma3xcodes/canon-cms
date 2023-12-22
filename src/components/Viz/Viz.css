@@ -1,0 +1,91 @@
+@import "../../css/mixins.css";
+
+.cp-viz-spinner {
+  display: block;
+  fill: var(--accent);
+  margin: 0 auto 10px;
+  & path {
+    animation-name: rotate;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    transform-origin: 50%;
+  }
+  & .middle {
+    animation-direction: reverse;
+  }
+  & .outer {
+    animation-duration: 8s;
+  }
+  & .middle {
+    animation-duration: 6s;
+  }
+  & .inner {
+    animation-duration: 4s;
+  }
+}
+
+.cp-viz-container {
+  position: relative;
+
+  /* title & buttons */
+  & > .cp-viz-header {
+    /* sizing & positioning */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* layout */
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    justify-content: space-between;
+
+    & > .cp-viz-title {
+      @mixin overflow-ellipsis;
+
+      &:not(:last-child) {
+        margin-right: var(--gutter-sm);
+      }
+    }
+
+    & > .Options {
+      flex-shrink: 0;
+
+      /* keep right aligned if no title */
+      &:first-child {
+        margin-left: auto;
+      }
+    }
+
+    /* header exists; make room for it */
+    & + .cp-viz-figure {
+      top: 1.5rem;
+      bottom: 1.5rem;
+      height: calc(100% - 1.5rem);
+    }
+  }
+
+  /* viz container */
+  & > .cp-viz-figure {
+    position: relative;
+    padding-top: var(--viz-aspect-ratio);
+    min-height: var(--viz-min-height);
+    margin-bottom: 1.5rem; /* account for viz top/bottom offset */
+  }
+  & .cp-viz {
+    @mixin absolute-expand;
+    position: absolute !important;
+  }
+
+  /* reset non-d3plus visualizations & visualizations with an explicit height in px */
+  &.cp-table-viz-container .cp-viz-figure,
+  &.cp-percentage-bar-viz-container .cp-viz-figure,
+  & > .cp-viz-figure.with-explicit-height {
+    padding-top: 0;
+    min-height: 0;
+
+    & > .cp-viz {
+      position: static !important;
+    }
+  }
+}

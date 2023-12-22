@@ -1,0 +1,226 @@
+@import "../../css/mixins.css";
+
+/* THEMING */
+.cp-section {
+  color: var(--section-text-color);
+}
+/* section (or section grouping) backgrounds */
+.cp-main > *:nth-child(odd):not(.cp-grouping-section),
+.cp-main > *:only-child > *:nth-child(odd):not(.cp-grouping-section) {
+  background-color: var(--section-bg-odd);
+}
+.cp-main > *:nth-child(even),
+.cp-main > *:only-child > *:nth-child(even) {
+  background-color: var(--section-bg-even);
+}
+.cp-section-heading-wrapper {
+  display: flex;
+  align-items: baseline;
+
+  &:last-child > .cp-section-heading {
+    margin-bottom: 0;
+  }
+}
+.cp-section-heading {
+  margin-top: 0;
+  color: var(--section-heading-color);
+}
+/* anchored headings */
+.cp-section-anchored-heading {
+  margin-left: -4rem; /* offset anchor */
+  padding-left: 2rem;
+
+  & + .cp-section-heading-anchor {
+    width: 2rem;
+    min-width: 2rem;
+    text-align: center;
+    position: relative;
+    left: -1.5rem;
+    bottom: 1px;
+    order: -1;
+    font-size: var(--font-md);
+    color: var(--section-heading-color);
+    /* transitions */
+    opacity: 0;
+  }
+}
+.cp-section-anchored-heading:focus + .cp-section-heading-anchor,
+.cp-section-anchored-heading:hover + .cp-section-heading-anchor,
+.cp-section-heading-anchor:hover,
+.cp-section-heading-anchor:focus {
+  opacity: 1;
+}
+
+/* LAYOUT */
+.cp-section {
+  padding: var(--gutter-md);
+  overflow: hidden;
+  height: auto;
+
+  @mixin min-md {
+    padding-top: var(--gutter-lg);
+    padding-bottom: var(--gutter-lg);
+  }
+}
+
+.cp-section-inner {
+  width: var(--container-width);
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cp-section-content {
+  margin-bottom: 0.5em;
+}
+
+/* GRAPHICS */
+.cp-graphic-viz-grid[class] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  text-align: center;
+
+  & > .cp-graphic-viz-container {
+    flex: 1 0 calc(33.333% - var(--gutter-md));
+    min-width: 8rem;
+    max-width: 100%;
+    padding: var(--gutter-sm);
+  }
+}
+
+/* STICKY */
+.cp-section.is-sticky {
+  background-color: var(--sticky-section-bg-color);
+
+  @mixin min-md {
+    position: relative; /* IE fallback */
+    position: sticky;
+    top: var(--sticky-section-offset);
+    z-index: 2;
+    padding-top: 0;
+    padding-bottom: 0;
+    /* theming */
+    box-shadow: var(--sticky-section-shadow);
+    /* layout */
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    height: var(--sticky-section-height);
+    /* handle overflow */
+    @mixin horizontal-overflow-container;
+    overflow-y: hidden;
+
+    /* hide scrollbar */
+    -ms-overflow-style: none;
+    &::-webkit-scrollbar {
+      width: 0;
+      opacity: 0;
+      display: none;
+    }
+
+    /* scale down elements */
+    & .cp-section-heading {
+      @mixin font-sm;
+      /* fudge alignment */
+      position: relative;
+      top: -1px;
+      /* fixes anchor link bug (#754) */
+      padding-left: 0;
+      margin-left: 0;
+      & + .cp-section-heading-anchor {
+        display: none;
+      }
+    }
+
+    /* reset default layout */
+    & .cp-default-section-caption {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 0;
+    }
+
+    /* further reset default layout */
+    & .cp-section-content > * {
+      display: inline-block;
+      vertical-align: middle;
+      width: auto;
+      margin: 0 var(--gutter-md) 0 0;
+
+      /* justified filters & heading */
+      &.cp-section-heading + * {
+        margin-left: auto;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    /* make it work in IE */
+    &.ie-is-stuck {
+      position: fixed;
+      width: calc(100vw - var(--gutter-sm));
+      max-width: calc(100vw - var(--gutter-sm));
+      top: var(--sticky-section-offset);
+      z-index: 1;
+    }
+  }
+
+  @mixin ie-only {
+    top: 0;
+  }
+}
+
+/* MODAL */
+[class*="-dialog"].cp-modal-section-dialog { /* specificity bump needed to override blueprint */
+  position: relative; /* needed to position close button */
+  /* sizing */
+  width: var(--container-width);
+  max-width: calc(100% - var(--gutter-lg));
+  padding-bottom: 0;
+}
+.cp-modal-section {
+  padding: var(--gutter-lg); /* equalize padding */
+}
+.cp-dialog-close-button {
+  /* sizing (equal to modal section padding) */
+  width: var(--gutter-lg);
+  height: var(--gutter-lg);
+  /* positioning */
+  position: absolute;
+  top: 0;
+  right: 0;
+  text-align: center;
+  /* theming */
+  @mixin button-reset;
+  color: var(--dark-1);
+  /* transitions */
+  transition:
+    color 0.1s ease-out,
+    opacity 0.1s ease-out,
+    transform 0.1s ease-out;
+
+  /* interactions */
+  &:hover, &:focus {
+    transform: scale(1.5);
+    color: var(--accent-dark);
+  }
+}
+
+/* button for resetting variables */
+.cp-var-reset-button {
+  transition-property: color, border, background-color, box-shadow, opacity;
+}
+
+/* comparison overrides */
+.cp-grouping.cp-grouping-comparison {
+  & .cp-section-inner {
+    flex-direction: column !important;
+    & > * {
+      width: 100% !important;
+    }
+  }
+}
